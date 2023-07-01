@@ -13,13 +13,44 @@ function App() {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch('http://localhost:8000/search', {
+      const response = await fetch('http://127.0.0.1:8000', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ searchText }),
       });
+
+      // Make a GET request to retrieve all books
+      fetch("http://127.0.0.1:8000")
+        .then(response => response.json())
+        .then(data => {
+          console.log(data); // Process the retrieved books
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+
+      // Make a POST request to create a new book
+      const bookData = {
+        id: "id",
+        first_name: "first_name",
+        last_name: "last_name",
+        book_name: "book_name"
+      };
+
+      fetch("http://127.0.0.1:8000", {
+        method: "POST",
+        body: JSON.stringify(bookData)
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(data); // Process the response from creating a book
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+
       const data = await response.json();
       setSearchResult(data.result);
     } catch (error) {
@@ -27,13 +58,13 @@ function App() {
     }
   };
 
-  const handleInputChange = (event) => {
-    setSearchText(event.target.value);
-  };
+  //const handleInputChange = (event) => {
+    //setSearchText(event.target.value);
+  //};
 
-  const handleFilterButton = () => {
-    handleSearch();
-  };
+  //const handleFilterButton = () => {
+  //  handleSearch();
+  //};
 
   return (
     <div className="app">
